@@ -1,13 +1,19 @@
-﻿<html>
+﻿@model List<UserManagementCrudApp.Models.User>
+
+<html>
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
+    <style>
+        .custom-font {
+            font-family: 'Roboto Slab', serif;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="text-center mb-5 mt-4 ">UserManagementCrudApp</h1>
+    <div class="container mb-5 mt-5">
+        <h1 class="text-center text-primary  display-4 custom-font ">Read View</h1>
 
-        <nav class="row justify-content-center">
+        <nav class="row justify-content-center mb-5 mt-5">
             <div class="col-3 d-grid">
                 <a href="/home/create" class="btn btn-primary">Create View</a>
             </div>
@@ -24,11 +30,54 @@
     </div>
 
 
+    <!-- Content section -->
     <div class="container flex-grow-1 py-5">
-    
+        <h2 class="mb-4"> All Users </h2>
+
+
+        @if (Model != null && Model.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped align-middle text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model)
+                        {
+                            <tr>
+                                @using (Html.BeginForm("UpdateOperation", "Home", FormMethod.Post))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.Hidden("Id", user.Id)
+                                    <td>
+                                        <input name="Name" class="form-control" value="@user.Name" />
+                                    </td>
+                                    <td>
+                                        <input name="Email" type="email" class="form-control" value="@user.Email" />
+                                    </td>
+                                    <td>
+                                        <input name="PhoneNumber" class="form-control" value="@user.PhoneNumber" />
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
     </div>
 
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <!-- Footer -->
+    <footer class="container mt-auto mb-5">
+        <small class="d-block text-center text-primary">&copy; 2025 UserManagementCrudApp</small>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>
